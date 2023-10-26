@@ -226,13 +226,6 @@
                                         <include>logback-spring.xml</include>
                                     </includes>
                                 </resource>
-
-                                <resource>
-                                    <directory>src/main/resources</directory>
-                                    <includes>
-                                        <include>start.sh</include>
-                                    </includes>
-                                </resource>
                             </resources>
                         </configuration>
                     </execution>

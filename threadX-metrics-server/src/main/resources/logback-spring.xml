@@ -2,13 +2,9 @@
 <configuration>
 
     <!-- 定义日志输出位置 -->
-    <property name="LOG_FILE" value="../logs" />
+    <property name="LOG_FILE" value="${logPath}" />
 
-    <!-- 定义日志级别 -->
-    <root level="INFO">
-        <appender-ref ref="CONSOLE" />
-        <appender-ref ref="ROLLING_FILE" />
-    </root>
+
 
     <!-- 定义控制台输出 Appender -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -31,5 +27,11 @@
             <maxHistory>30</maxHistory>
         </rollingPolicy>
     </appender>
+
+    <!-- 定义日志级别 -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="ROLLING_FILE" />
+    </root>
 
 </configuration>
