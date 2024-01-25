@@ -248,6 +248,25 @@
                             </resources>
                         </configuration>
                     </execution>
+
+                    <execution>
+                        <id>copy-sql-resources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/threadX/sql</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources/sql</directory>
+                                    <includes>
+                                        <include>threadx_tms.sql</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 
