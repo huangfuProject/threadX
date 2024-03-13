@@ -63,7 +63,7 @@ public class ThreadPoolDataConsumer implements InitializingBean, DisposableBean 
             scheduledFuture.cancel(false);
         }
         THREAD_POOL_DATA.clear();
-        IS_START.compareAndSet(false, true);
+        IS_START.compareAndSet(true, false);
     }
 
     @Override
