@@ -1,0 +1,25 @@
+<assembly>
+    <id>asm-build</id>
+    <formats>
+        <format>dir</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <dependencySets>
+        <dependencySet>
+            <useProjectArtifact>false</useProjectArtifact>
+            <outputDirectory>/libs</outputDirectory>
+            <scope>runtime</scope>
+        </dependencySet>
+    </dependencySets>
+
+    <fileSets>
+        <fileSet>
+            <directory>${project.build.directory}</directory>
+            <outputDirectory>/libs</outputDirectory>
+            <includes>
+                <include>threadX-modify-asm*.jar</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+
+</assembly>

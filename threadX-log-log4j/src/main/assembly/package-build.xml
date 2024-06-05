@@ -1,0 +1,33 @@
+<assembly>
+    <id>log-build</id>
+    <formats>
+        <format>dir</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <dependencySets>
+        <dependencySet>
+            <useProjectArtifact>false</useProjectArtifact>
+            <outputDirectory>/libs</outputDirectory>
+            <scope>runtime</scope>
+        </dependencySet>
+    </dependencySets>
+
+    <fileSets>
+        <fileSet>
+            <directory>${project.build.directory}</directory>
+            <outputDirectory>/libs</outputDirectory>
+            <includes>
+                <include>threadX-log-log4j*.jar</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>${project.basedir}/src/main/resources</directory>
+            <outputDirectory>conf</outputDirectory>
+            <includes>
+                <include>**/*.*</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+
+</assembly>

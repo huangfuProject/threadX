@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.threadx.metrics.server.mapper.ThreadPoolDataMapper">
+
+    <resultMap id="threadPoolData" type="com.threadx.metrics.server.entity.ThreadPoolData">
+        <id property="id" column="id"/>
+        <result property="serverKey" column="server_key"/>
+        <result property="instanceKey" column="instance_key"/>
+        <result property="address" column="address"/>
+        <result property="threadPoolGroupName" column="thread_pool_group_name"/>
+        <result property="threadPoolName" column="thread_pool_name"/>
+        <result property="corePoolSize" column="core_pool_size"/>
+        <result property="maximumPoolSize" column="maximum_pool_size"/>
+        <result property="activeCount" column="active_count"/>
+        <result property="thisThreadCount" column="this_thread_count"/>
+        <result property="largestPoolSize" column="largest_pool_size"/>
+        <result property="rejectedCount" column="rejected_count"/>
+        <result property="taskCount" column="task_count"/>
+        <result property="completedTaskCount" column="completed_task_count"/>
+        <result property="queueType" column="queue_type"/>
+        <result property="rejectedType" column="rejected_type"/>
+        <result property="keepAliveTime" column="keep_alive_time"/>
+        <result property="threadPoolFlow" column="thread_pool_flow"/>
+        <result property="instanceId" column="instance_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="threadPoolObjectId" column="thread_pool_object_id"/>
+    </resultMap>
+
+
+    <select id="findByMaxIdAndThreadPoolNameAndInstanceId" resultMap="threadPoolData">
+        SELECT *
+        FROM thread_pool_data
+        WHERE id = (
+            SELECT MAX(id)
+            FROM thread_pool_data
+            WHERE thread_pool_name = #{threadPoolName} and instance_id = #{instanceId}
+        )
+
+    </select>
+
+
+    <select id="findThreadPoolStateCountByInstanceId" resultType="com.threadx.metrics.server.vo.ThreadStatusVo">
+        SELECT
+            thread_pool_name AS threadPoolName,
+            CASE
+                WHEN MAX( UNIX_TIMESTAMP() * 1000 - create_time ) > 60000 THEN 0 ELSE 1
+            END AS hasActive
+        FROM
+            thread_pool_data
+        WHERE
+                id IN ( SELECT MAX( id ) FROM thread_pool_data WHERE instance_id = #{instanceId} GROUP BY thread_pool_name )
+        GROUP BY
+            thread_pool_name
+        ORDER BY
+            thread_pool_name;
+    </select>
+
+
+    <insert id="upsertBatchSavePoolData">
+        INSERT INTO thread_pool_data (
+                                          server_key,
+                                          instance_key,
+                                          address,
+                                          thread_pool_object_id,
+                                          thread_pool_group_name,
+                                          thread_pool_name,
+                                          core_pool_size,
+                                          maximum_pool_size,
+                                          active_count,
+                                          this_thread_count,
+                                          largest_pool_size,
+                                          rejected_count,
+                                          task_count,
+                                          completed_task_count,
+                                          queue_type,
+                                          rejected_type,
+                                          thread_pool_flow,
+                                          keep_alive_time,
+                                          instance_id,
+                                          create_time,
+                                          update_time
+                                      )
+        VALUES
+            <foreach collection="threadPoolDataList" item="threadPoolData" index="ti" separator=",">
+                (
+                    #{threadPoolData.serverKey},
+                    #{threadPoolData.instanceKey},
+                    #{threadPoolData.address},
+                    #{threadPoolData.threadPoolObjectId},
+                    #{threadPoolData.threadPoolGroupName},
+                    #{threadPoolData.threadPoolName},
+                    #{threadPoolData.corePoolSize},
+                    #{threadPoolData.maximumPoolSize},
+                    #{threadPoolData.activeCount},
+                    #{threadPoolData.thisThreadCount},
+                    #{threadPoolData.largestPoolSize},
+                    #{threadPoolData.rejectedCount},
+                    #{threadPoolData.taskCount},
+                    #{threadPoolData.completedTaskCount},
+                    #{threadPoolData.queueType},
+                    #{threadPoolData.rejectedType},
+                    #{threadPoolData.threadPoolFlow},
+                    #{threadPoolData.keepAliveTime},
+                    #{threadPoolData.instanceId},
+                    #{threadPoolData.createTime},
+                    #{threadPoolData.updateTime}
+                )
+            </foreach>
+        ON DUPLICATE KEY UPDATE
+            server_key = VALUES(server_key),
+            instance_key = VALUES(instance_key),
+            address = VALUES(address),
+            thread_pool_object_id = VALUES(thread_pool_object_id),
+            thread_pool_group_name = VALUES(thread_pool_group_name),
+            thread_pool_name = VALUES(thread_pool_name),
+            core_pool_size = VALUES(core_pool_size),
+            maximum_pool_size = VALUES(maximum_pool_size),
+            active_count = VALUES(active_count),
+            this_thread_count = VALUES(this_thread_count),
+            largest_pool_size = VALUES(largest_pool_size),
+            rejected_count = VALUES(rejected_count),
+            task_count = VALUES(task_count),
+            completed_task_count = VALUES(completed_task_count),
+            queue_type = VALUES(queue_type),
+            rejected_type = VALUES(rejected_type),
+            thread_pool_flow = VALUES(thread_pool_flow),
+            keep_alive_time = VALUES(keep_alive_time),
+            instance_id = VALUES(instance_id),
+            update_time = VALUES(update_time)
+    </insert>
+
+</mapper>

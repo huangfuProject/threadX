@@ -1,0 +1,17 @@
+<assembly>
+    <id>threadX-communication-build</id>
+    <formats>
+        <format>dir</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <fileSets>
+        <fileSet>
+            <directory>${project.build.directory}</directory>
+            <outputDirectory>/libs</outputDirectory>
+            <includes>
+                <include>threadX-communication*.jar</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+
+</assembly>

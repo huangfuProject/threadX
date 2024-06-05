@@ -1,0 +1,17 @@
+<assembly>
+    <id>event-build</id>
+    <formats>
+        <format>dir</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <fileSets>
+        <fileSet>
+            <directory>${project.build.directory}</directory>
+            <outputDirectory>/boot</outputDirectory>
+            <includes>
+                <include>threadX-log-api*.jar</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+
+</assembly>

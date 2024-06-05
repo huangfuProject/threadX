@@ -1,0 +1,91 @@
+<assembly>
+    <id>threadX-build</id>
+    <formats>
+        <format>dir</format>
+        <format>tar.gz</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <fileSets>
+        <fileSet>
+            <directory>threadX-bootstraps/target/threadX</directory>
+            <outputDirectory>/threadX-Agent</outputDirectory>
+            <includes>
+                <include>**/*.*</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>threadX-modify-core/target/threadX</directory>
+            <outputDirectory>/threadX-Agent</outputDirectory>
+            <includes>
+                <include>**/*.*</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>threadX-event-processor/target/threadX</directory>
+            <outputDirectory>/threadX-Agent</outputDirectory>
+            <includes>
+                <include>**/*.*</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>threadX-modify-asm/target/threadX</directory>
+            <outputDirectory>/threadX-Agent</outputDirectory>
+            <includes>
+                <include>**/*.*</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>threadX-metrics-out-log4j/target/threadX</directory>
+            <outputDirectory>/threadX-Agent</outputDirectory>
+            <includes>
+                <include>**/*.*</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>threadX-metrics-out-tms/target/threadX</directory>
+            <outputDirectory>/threadX-Agent</outputDirectory>
+            <includes>
+                <include>**/*.*</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>threadX-log-api/target/threadX</directory>
+            <outputDirectory>/threadX-Agent</outputDirectory>
+            <includes>
+                <include>**/*.*</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>threadX-log-log4j/target/threadX</directory>
+            <outputDirectory>/threadX-Agent</outputDirectory>
+            <includes>
+                <include>**/*.*</include>
+            </includes>
+        </fileSet>
+
+
+        <fileSet>
+            <directory>threadX-communication/target/threadX</directory>
+            <outputDirectory>/threadX-Agent</outputDirectory>
+            <includes>
+                <include>**/*.*</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>threadX-metrics-server/target/threadX</directory>
+            <outputDirectory>/threadX-Tms</outputDirectory>
+            <includes>
+                <include>**/*.*</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+</assembly>

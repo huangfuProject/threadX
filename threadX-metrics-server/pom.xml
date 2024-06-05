@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>threadX</artifactId>
+        <groupId>com.threadX</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>threadX-metrics-server</artifactId>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+
+        <spring.boot-version>2.6.14</spring.boot-version>
+        <mybatis-plus-version>3.5.3.1</mybatis-plus-version>
+        <redisson-version>3.21.0</redisson-version>
+        <guava-version>31.1-jre</guava-version>
+        <knife4j-version>4.0.0</knife4j-version>
+        <jwt-version>0.11.5</jwt-version>
+        <uasparser-version>0.6.2</uasparser-version>
+    </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.threadX</groupId>
+            <artifactId>threadX-modify-core</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.threadX</groupId>
+            <artifactId>threadX-communication</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>${mybatis-plus-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>${redisson-version}</version>
+        </dependency>
+
+        <!-- jwt -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>${jwt-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>${jwt-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-gson</artifactId>
+            <version>${jwt-version}</version>
+        </dependency>
+
+
+
+        <!--引入Knife4j的官方start包,该指南选择Spring Boot版本<3.0,开发者需要注意-->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-openapi2-spring-boot-starter</artifactId>
+            <version>${knife4j-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cz.mallat.uasparser</groupId>
+            <artifactId>uasparser</artifactId>
+            <version>${uasparser-version}</version>
+        </dependency>
+
+
+
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot-version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>npm-install</id>
+                        <phase>initialize</phase> <!-- 可以在initialize阶段执行，确保在编译前完成 -->
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>${project.basedir}/view/tms-view</workingDirectory> <!-- 指定工作目录 -->
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>install</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>npm-build</id>
+                        <phase>prepare-package</phase> <!-- 可以在prepare-package阶段执行，确保在打包前完成 -->
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>${project.basedir}/view/tms-view</workingDirectory> <!-- 指定工作目录 -->
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>run</argument>
+                                <argument>build</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot-version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.5.0</version>
+                <configuration>
+                    <finalName>threadX</finalName>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptors>
+                        <descriptor>/src/main/assembly/package-build.xml</descriptor>
+                    </descriptors>
+<!--                    <descriptorRefs>-->
+<!--                        <descriptorRef>jar-with-dependencies</descriptorRef>-->
+<!--                    </descriptorRefs>-->
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/threadX/conf</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources/config</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <includes>
+                                        <include>logback-spring.xml</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>copy-bin-resources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/threadX/bin</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources/bin</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>copy-sql-resources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/threadX/sql</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources/sql</directory>
+                                    <includes>
+                                        <include>threadx_tms.sql</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>copy-web-resources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/threadX/pages</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>view/tms-view/dist</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${project.basedir}/view/tms-view/dist</directory>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                        <fileset>
+                            <directory>${project.basedir}/view/tms-view/node_modules</directory>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+    <profiles>
+        <!--开发环境-->
+        <profile>
+            <id>dev</id>
+            <properties>
+                <tms.version>${project.parent.version}</tms.version>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
+
+
+</project>

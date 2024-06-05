@@ -1,0 +1,33 @@
+<assembly>
+    <id>package-build</id>
+    <formats>
+        <format>dir</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <dependencySets>
+        <dependencySet>
+            <useProjectArtifact>false</useProjectArtifact>
+            <outputDirectory>/boot</outputDirectory>
+            <scope>runtime</scope>
+        </dependencySet>
+    </dependencySets>
+
+    <fileSets>
+        <fileSet>
+            <directory>${project.build.directory}</directory>
+            <outputDirectory>/</outputDirectory>
+            <includes>
+                <include>threadX-bootstraps.jar</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>${project.basedir}/src/main/resources</directory>
+            <outputDirectory>conf</outputDirectory>
+            <includes>
+                <include>**/*.*</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+
+</assembly>

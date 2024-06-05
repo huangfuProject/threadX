@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>threadX</artifactId>
+        <groupId>com.threadX</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>threadX-metrics-out-tms</artifactId>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.threadX</groupId>
+            <artifactId>threadX-log-api</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.threadX</groupId>
+            <artifactId>threadX-log-log4j</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.threadX</groupId>
+            <artifactId>threadX-modify-core</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.threadX</groupId>
+            <artifactId>threadX-communication</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+
+    </dependencies>
+
+    <build>
+        <finalName>${artifactId}-${project.parent.version}</finalName>
+
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <finalName>threadX</finalName>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptors>
+                        <descriptor>/src/main/assembly/package-build.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

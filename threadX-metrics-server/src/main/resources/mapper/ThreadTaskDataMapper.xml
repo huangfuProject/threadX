@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.threadx.metrics.server.mapper.ThreadTaskDataMapper">
+
+    <resultMap id="threadTaskDataErrorTopMap" type="com.threadx.metrics.server.vo.ThreadTaskDataErrorTop">
+        <result property="instanceId" column="instance_id" />
+        <result property="threadPoolGroupName" column="thread_pool_group_name" />
+        <result property="threadPoolName" column="thread_pool_name" />
+        <result property="errorCount" column="error_count" />
+    </resultMap>
+
+
+    <select id="findThreadTaskDataErrorCalculation" resultMap="threadTaskDataErrorTopMap" parameterType="int">
+        SELECT
+            instance_id,
+            thread_pool_group_name,
+            thread_pool_name,
+            COUNT(*) AS error_count
+        FROM
+            thread_task_data
+        WHERE
+            success = 0
+        GROUP BY
+            instance_id,
+            thread_pool_group_name,
+            thread_pool_name,
+            success
+        ORDER BY
+            error_count DESC
+            LIMIT #{limit};
+    </select>
+
+
+    <select id="findRateByInstanceIdAndThreadPoolName" resultType="com.threadx.metrics.server.vo.ThreadTaskRateVo">
+
+        SELECT
+            ROUND(SUM( success ) / COUNT(*), 2 ) * 100 AS successRate,
+            ROUND(SUM( refuse ) / COUNT(*), 2 ) * 100 AS refuseRate
+        FROM
+            thread_task_data
+        WHERE
+            thread_pool_name = #{threadPoolName} AND instance_id = #{instanceId}
+    </select>
+
+
+    <select id="findAvgByInstanceIdAndThreadPoolName" resultType="com.threadx.metrics.server.vo.ThreadTaskAvgVo">
+        SELECT
+            ROUND( AVG( runIng_consuming_time ), 2 ) AS averageTimeConsuming,
+            ROUND( AVG( wait_time ), 2 ) AS averageWaitTimeConsuming
+        FROM
+            thread_task_data
+        WHERE
+            thread_pool_name = #{threadPoolName} AND instance_id = #{instanceId} AND success = '1';
+    </select>
+</mapper>

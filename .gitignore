@@ -1,0 +1,90 @@
+# Eclipse project files
+.project
+.classpath
+.settings
+
+# IntelliJ IDEA project files and directories
+*.iml
+*.ipr
+*.iws
+.idea/
+.shelf/
+
+# Geany project file
+.geany
+
+# KDevelop project file and directory
+.kdev4/
+*.kdev4
+
+# Build targets
+/target
+*/target
+
+# Report directories
+/reports
+*/reports
+
+# Mac-specific directory that no other operating system needs.
+.DS_Store
+
+# JVM crash logs
+hs_err_pid*.log
+replay_pid*.log
+
+# JVM dumps
+*.hprof.xz
+*.threads
+
+dependency-reduced-pom.xml
+
+*/.unison.*
+
+# exclude mainframer files
+mainframer
+.mainframer
+
+# exclude docker-sync stuff
+.docker-sync
+*/.docker-sync
+
+# exclude vscode files
+.vscode/
+*.factorypath
+
+# exclude file created by the flatten plugin
+.flattened-pom.xml
+.java-version
+
+
+# vue
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+.DS_Store
+dist
+dist-ssr
+coverage
+*.local
+
+/cypress/videos/
+/cypress/screenshots/
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+package-lock.json

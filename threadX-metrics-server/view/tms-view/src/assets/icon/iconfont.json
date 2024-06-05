@@ -1,0 +1,51 @@
+{
+  "id": "4064967",
+  "name": "threadx",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "20104486",
+      "name": "角色配置",
+      "font_class": "jiaose",
+      "unicode": "e614",
+      "unicode_decimal": 58900
+    },
+    {
+      "icon_id": "6688120",
+      "name": "一片空白的豆丁",
+      "font_class": "douding",
+      "unicode": "e733",
+      "unicode_decimal": 59187
+    },
+    {
+      "icon_id": "18321645",
+      "name": "用户管理",
+      "font_class": "yonghuguanli",
+      "unicode": "e645",
+      "unicode_decimal": 58949
+    },
+    {
+      "icon_id": "11372705",
+      "name": "刷新",
+      "font_class": "shuaxin",
+      "unicode": "e8b9",
+      "unicode_decimal": 59577
+    },
+    {
+      "icon_id": "3282357",
+      "name": "工作台",
+      "font_class": "gongzuotai",
+      "unicode": "e636",
+      "unicode_decimal": 58934
+    },
+    {
+      "icon_id": "712281",
+      "name": "项目管理",
+      "font_class": "icon-project",
+      "unicode": "e64a",
+      "unicode_decimal": 58954
+    }
+  ]
+}
