@@ -34,8 +34,8 @@
         <lombok-maven-plugin.version>1.18.20.0</lombok-maven-plugin.version>
         <log4j.version>2.20.0</log4j.version>
         <slf4j.version>2.0.6</slf4j.version>
-        <netty.version>4.1.91.Final</netty.version>
-        <hutool.version>5.8.8</hutool.version>
+        <netty.version>4.2.0.Final</netty.version>
+        <hutool.version>5.8.37</hutool.version>
         <protostuff.version>1.8.0</protostuff.version>
     </properties>
 
