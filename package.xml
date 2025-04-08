@@ -80,12 +80,5 @@
             </includes>
         </fileSet>
 
-        <fileSet>
-            <directory>threadX-metrics-server/target/threadX</directory>
-            <outputDirectory>/threadX-Tms</outputDirectory>
-            <includes>
-                <include>**/*.*</include>
-            </includes>
-        </fileSet>
     </fileSets>
 </assembly>

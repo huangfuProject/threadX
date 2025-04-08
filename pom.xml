@@ -19,7 +19,6 @@
         <module>threadX-metrics-out-log4j</module>
         <module>threadX-metrics-out-tms</module>
         <module>threadX-communication</module>
-        <module>threadX-metrics-server</module>
     </modules>
 
     <properties>
