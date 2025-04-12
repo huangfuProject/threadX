@@ -50,8 +50,8 @@ public class EventUpdateThreadPoolCall implements UpdateThreadPoolCall{
             throw new RuntimeException("线程池参数不合法【coreSize > maximumPoolSize】.");
         }
 
-        if(rejectedExecutionHandlerClass != null && !"".equals(rejectedExecutionHandlerClass)) {
-
+        if(rejectedExecutionHandlerClass != null && !rejectedExecutionHandlerClass.isEmpty()) {
+            //TODO
         }
 
         threadPoolExecutor.setCorePoolSize(coreSize);

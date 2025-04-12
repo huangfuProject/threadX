@@ -1,8 +1,6 @@
 package com.threadx.communication.common.future;
 
-import com.threadx.communication.common.agreement.packet.SyncMessage;
-import com.threadx.communication.common.agreement.packet.ThreadPoolUpdateRequestMessage;
-import com.threadx.communication.common.agreement.packet.ThreadPoolUpdateResponseMessage;
+import com.threadx.communication.common.agreement.packet.Message;
 import io.netty.channel.Channel;
 import io.netty.util.HashedWheelTimer;
 import io.netty.util.Timeout;
@@ -42,7 +40,7 @@ public class DefaultFuture extends CompletableFuture<Object> implements Serializ
     /**
      * 请求的消息对象
      */
-    private SyncMessage requestSyncMessage;
+    private Message requestSyncMessage;
 
     /**
      * 通讯管道
@@ -62,18 +60,21 @@ public class DefaultFuture extends CompletableFuture<Object> implements Serializ
     /**
      * 未来回复对象缓存
      */
-    private final static Map<String, DefaultFuture> FUTURE_CACHE = new ConcurrentHashMap<>(32);
+    private final static Map<Long, DefaultFuture> FUTURE_CACHE = new ConcurrentHashMap<>(32);
 
-    private DefaultFuture(SyncMessage requestMessage, Channel clientChannel, int timeout) {
-        String messageId = requestMessage.getMessageId();
-        if (messageId != null && messageId.length() > 0) {
-            this.requestSyncMessage = requestMessage;
-            this.clientChannel = clientChannel;
-            this.timeout = timeout;
-            FUTURE_CACHE.put(messageId, this);
-            this.timeoutCheckTask = HASHED_WHEEL_TIMER.newTimeout(new TimeoutCheckTimerTask(messageId), timeout, TimeUnit.SECONDS);
-        } else {
-            System.err.println("requestMessage message【messageId】is null, Please check the parameters! Request sent, but no result set!");
+    private DefaultFuture(Message requestMessage, Channel clientChannel, int timeout) {
+        Long messageId = requestMessage.getMessageId();
+        if(requestMessage.isSync()) {
+
+            if (messageId != null) {
+                this.requestSyncMessage = requestMessage;
+                this.clientChannel = clientChannel;
+                this.timeout = timeout;
+                FUTURE_CACHE.put(messageId, this);
+                this.timeoutCheckTask = HASHED_WHEEL_TIMER.newTimeout(new TimeoutCheckTimerTask(messageId), timeout, TimeUnit.SECONDS);
+            } else {
+                throw new RuntimeException("requestMessage message【messageId】is null, Please check the parameters! Request sent, but no result set!");
+            }
         }
     }
 
@@ -86,7 +87,7 @@ public class DefaultFuture extends CompletableFuture<Object> implements Serializ
      * @param timeout        超时时间
      * @return 消息处理器
      */
-    public static DefaultFuture newDefaultFuture(SyncMessage requestMessage, Channel clientChannel, int timeout) {
+    public static DefaultFuture newDefaultFuture(Message requestMessage, Channel clientChannel, int timeout) {
         return new DefaultFuture(requestMessage, clientChannel, timeout);
     }
 
@@ -96,15 +97,15 @@ public class DefaultFuture extends CompletableFuture<Object> implements Serializ
      * @param messageId 消息的id
      * @return 消息回复对象
      */
-    public static DefaultFuture getFuture(String messageId) {
+    public static DefaultFuture getFuture(Long messageId) {
         return FUTURE_CACHE.get(messageId);
     }
 
     private static class TimeoutCheckTimerTask implements TimerTask {
 
-        private final String messageId;
+        private final Long messageId;
 
-        private TimeoutCheckTimerTask(String messageId) {
+        private TimeoutCheckTimerTask(Long messageId) {
             this.messageId = messageId;
         }
 
@@ -158,8 +159,8 @@ public class DefaultFuture extends CompletableFuture<Object> implements Serializ
      * @param messageId 消息的Id
      * @param channel   消息管道
      */
-    public static void timoutReceived(String messageId, Channel channel) {
-        if (messageId != null && messageId.length() > 0) {
+    public static void timoutReceived(Long messageId, Channel channel) {
+        if (messageId != null) {
             DefaultFuture defaultFuture = FUTURE_CACHE.remove(messageId);
             if (defaultFuture != null) {
                 defaultFuture.doReceived(new RuntimeException(String.format("request timeout. address is %s.", channel != null ? channel.remoteAddress() : "")));
@@ -175,17 +176,16 @@ public class DefaultFuture extends CompletableFuture<Object> implements Serializ
      *
      * @param syncMessage 消息结果集
      */
-    public static void received(SyncMessage syncMessage, Channel channel) {
-        String messageId = syncMessage.getMessageId();
-        if (messageId != null && messageId.length() > 0) {
+    public static void received(Message syncMessage, Channel channel) {
+        Long messageId = syncMessage.getMessageId();
+        if (messageId != null) {
             DefaultFuture defaultFuture = FUTURE_CACHE.remove(messageId);
             if (defaultFuture != null) {
                 defaultFuture.doReceived(syncMessage);
                 defaultFuture.timeoutCheckTask.cancel();
             } else {
                 String warnMessage = "The timeout response finally returned at %s , response status is false %s , please check provider side for detailed result.";
-                String message = String.format(warnMessage, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date()),
-                        channel == null ? "" : ", channel: " + channel.remoteAddress());
+                String message = String.format(warnMessage, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date()), channel == null ? "" : ", channel: " + channel.remoteAddress());
                 System.err.println(message);
             }
         } else {

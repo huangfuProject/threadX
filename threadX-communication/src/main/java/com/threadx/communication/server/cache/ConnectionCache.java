@@ -3,6 +3,8 @@ package com.threadx.communication.server.cache;
 import com.threadx.communication.common.utils.ChannelUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,6 +109,8 @@ public class ConnectionCache {
     }
 
 
+    @Setter
+    @Getter
     static class ChannelHandlerContextTime {
         /**
          * 追加时间
@@ -127,20 +131,5 @@ public class ConnectionCache {
             this.channelHandlerContext = channelHandlerContext;
         }
 
-        public Long getAddTime() {
-            return addTime;
-        }
-
-        public void setAddTime(Long addTime) {
-            this.addTime = addTime;
-        }
-
-        public ChannelHandlerContext getChannelHandlerContext() {
-            return channelHandlerContext;
-        }
-
-        public void setChannelHandlerContext(ChannelHandlerContext channelHandlerContext) {
-            this.channelHandlerContext = channelHandlerContext;
-        }
     }
 }

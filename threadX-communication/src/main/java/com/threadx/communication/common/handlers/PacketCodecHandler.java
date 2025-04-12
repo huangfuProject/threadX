@@ -8,6 +8,7 @@ import com.threadx.communication.common.serializes.MessageSerialize;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageCodec;
+import io.netty.util.ReferenceCountUtil;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ import java.util.List;
  * 协议包编码需要以下几个步骤<br/>
  * <p>
  * 1. 基于获取到的序列化协议处理器将传输过来的对象进行编码操作，然后将数据对象序列化为字节数组
+ * <br/>
  * 2. 将获取到的请求体字节数组基于获取到的协议框架进行编码，调用{@link MessageAgreementLayout#messageEncode(byte[])}进行编码为预设协议体，并传输到网络传输的数据包中
  * <p>
  * 协议包解码：<br/>
@@ -48,15 +50,22 @@ public class PacketCodecHandler extends ByteToMessageCodec<Message> {
     }
 
 
-    @Override
-    protected void encode(ChannelHandlerContext channelHandlerContext, Message message, ByteBuf byteBuf) throws Exception {
-        //先将对象序列化
-        byte[] bytes = messageSerialize.serializeObject(message);
-        //将序列化好的字节数组
-        ByteBuf encodeByteBuf = messageAgreementLayout.messageEncode(bytes);
-        //将数据编码为具体的协议体框架后 写入网络传输包
-        byteBuf.writeBytes(encodeByteBuf);
-    }
+        @Override
+        protected void encode(ChannelHandlerContext channelHandlerContext, Message message, ByteBuf byteBuf) throws Exception {
+            //先将对象序列化
+            byte[] bytes = messageSerialize.serializeObject(message);
+            //将序列化好的字节数组
+            ByteBuf encodeByteBuf = messageAgreementLayout.messageEncode(bytes);
+            try {
+                //将数据编码为具体的协议体框架后 写入网络传输包
+                // -Dio.netty.leakDetectionLevel=paranoid
+                byteBuf.writeBytes(encodeByteBuf);
+            }finally {
+                // 安全释放
+                ReferenceCountUtil.release(encodeByteBuf);
+            }
+
+        }
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {

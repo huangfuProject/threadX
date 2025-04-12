@@ -1,10 +1,10 @@
 package com.threadx.communication.client.handler;
 
 import com.threadx.communication.client.CommunicationClient;
-import com.threadx.communication.client.ConnectionManager;
 import com.threadx.communication.common.agreement.packet.HeartbeatMessage;
-import com.threadx.communication.common.handlers.ThreadXChannelInboundHandler;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.concurrent.ScheduledFuture;
 
 import java.util.concurrent.TimeUnit;
@@ -16,7 +16,8 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author huangfukexing
  * @date 2023/4/25 13:13
  */
-public class ClientHeartbeatHandler extends ThreadXChannelInboundHandler<HeartbeatMessage> {
+@ChannelHandler.Sharable
+public class ClientHeartbeatHandler extends SimpleChannelInboundHandler<HeartbeatMessage> {
 
     /**
      * 心跳间隔

@@ -2,11 +2,10 @@ package com.threadx.communication.common.utils;
 
 import cn.hutool.core.util.StrUtil;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.epoll.Epoll;
-import io.netty.channel.epoll.EpollEventLoopGroup;
-import io.netty.channel.epoll.EpollServerSocketChannel;
-import io.netty.channel.epoll.EpollSocketChannel;
+import io.netty.channel.MultiThreadIoEventLoopGroup;
+import io.netty.channel.epoll.*;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.nio.NioIoHandler;
 import io.netty.channel.socket.ServerSocketChannel;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -32,7 +31,7 @@ public class NettyEventLoopUtils {
      */
     public static EventLoopGroup eventLoopGroup(int threads, String threadFactoryName) {
         ThreadFactory threadFactory = new DefaultThreadFactory(threadFactoryName, true);
-        return shouldEpoll() ? new EpollEventLoopGroup(threads, threadFactory) : new NioEventLoopGroup(threads, threadFactory);
+        return shouldEpoll() ? new MultiThreadIoEventLoopGroup(threads, threadFactory, EpollIoHandler.newFactory()) : new MultiThreadIoEventLoopGroup(threads, threadFactory, NioIoHandler.newFactory());
     }
 
     /**

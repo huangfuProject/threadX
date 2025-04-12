@@ -1,10 +1,9 @@
 package com.threadx.communication.common.agreement.packet;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * 消息定义的父类
@@ -13,23 +12,40 @@ import java.io.Serializable;
  * @date 2023/4/7 09:19
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class Message implements Serializable {
+public abstract class Message implements Serializable {
 
     private static final long serialVersionUID = -60259995547914226L;
 
+    private static final AtomicLong IDX = new AtomicLong();
 
-
+    public Message() {
+        this.messageId = IDX.incrementAndGet();
+    }
 
     /**
-     * 服务的名称
+     * 是否是同步信息
      */
-    private String serverKey;
+    private boolean sync = false;
+
     /**
-     * 实例名称
+     * 消息的id
      */
-    private String instanceKey;
+    private final Long messageId;
+
+    /**
+     * 开启异步
+     */
+    public void enableAsync() {
+        this.sync = false;
+    }
+
+    /**
+     * 开启同步
+     */
+    public void enableSync() {
+        this.sync = true;
+    }
+
 
     /**
      * 获取当前类的类型

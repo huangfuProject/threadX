@@ -53,8 +53,9 @@ public class CommunicationClient {
      */
     private final ClientConfig clientConfig;
 
+
     public CommunicationClient(ClientConfig clientConfig) {
-        ConnectionManager.reConnectionConfinementConnection();
+        //ConnectionManager.reConnectionConfinementConnection();
         this.clientConfig = clientConfig;
         //连接服务器
         connect();
@@ -133,8 +134,6 @@ public class CommunicationClient {
      * @param message 消息体
      */
     public void asyncSendMessage(Message message) {
-        message.setServerKey(clientConfig.getServerKey());
-        message.setInstanceKey(clientConfig.getInstanceKey());
         channel.writeAndFlush(message);
     }
 

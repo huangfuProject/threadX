@@ -83,6 +83,12 @@ public class CommunicationServerBootStrap {
                 // 这个分配器可以重用ByteBuf，避免了频繁的内存分配和释放，减少了内存碎片。
                 // 同时，由于Netty的ByteBuf支持池化，所以可以提高性能。
                 .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
+                // 接收缓冲区128KB
+                .childOption(ChannelOption.SO_RCVBUF, 128 * 1024)
+                // 发送缓冲区128KB
+                .childOption(ChannelOption.SO_SNDBUF, 128 * 1024)
+                 //添加连接队列大小配置：默认50可能不足
+                .option(ChannelOption.SO_BACKLOG, 8192)
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {

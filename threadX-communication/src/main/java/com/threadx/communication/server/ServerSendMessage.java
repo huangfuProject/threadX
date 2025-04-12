@@ -1,6 +1,6 @@
 package com.threadx.communication.server;
 
-import com.threadx.communication.common.agreement.packet.SyncMessage;
+import com.threadx.communication.common.agreement.packet.Message;
 import com.threadx.communication.common.future.DefaultFuture;
 import com.threadx.communication.server.cache.ConnectionCache;
 import io.netty.channel.Channel;
@@ -21,7 +21,7 @@ public class ServerSendMessage {
      * @param syncMessage 要发送的消息
      * @return 结果集
      */
-    public static SyncMessage syncSendMessage(String address, SyncMessage syncMessage) {
+    public static Message syncSendMessage(String address, Message syncMessage) {
         ChannelHandlerContext connection = ConnectionCache.getConnection(address);
         if (connection == null) {
             throw new RuntimeException(String.format("The client【%s】 connection is not active.", address));
@@ -34,8 +34,8 @@ public class ServerSendMessage {
             if (resultObject instanceof Exception) {
                 throw new RuntimeException((Throwable) resultObject);
             }
-            if (resultObject instanceof SyncMessage) {
-                return (SyncMessage) resultObject;
+            if (resultObject instanceof Message) {
+                return (Message) resultObject;
             } else {
                 throw new RuntimeException("The result set received is not data of the synchronous message type.");
             }

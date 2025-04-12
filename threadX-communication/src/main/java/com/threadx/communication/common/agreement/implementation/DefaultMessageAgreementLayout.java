@@ -2,6 +2,7 @@ package com.threadx.communication.common.agreement.implementation;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
+import io.netty.util.ReferenceCountUtil;
 
 /**
  * *************************************************<br/>
@@ -27,15 +28,21 @@ public class DefaultMessageAgreementLayout implements MessageAgreementLayout {
     @Override
     public ByteBuf messageEncode(byte[] data) {
         ByteBuf byteBuf = ByteBufAllocator.DEFAULT.directBuffer(data.length);
-        // 写入数据校验位
-        byteBuf.writeShort(MAGIC);
-        // 写入字段数据长度
-        int dataLength = data.length;
-        // 将数据长度写入协议体
-        byteBuf.writeInt(dataLength);
-        // 写入数据
-        byteBuf.writeBytes(data);
-        return byteBuf;
+        try{
+            // 写入数据校验位
+            byteBuf.writeShort(MAGIC);
+            // 写入字段数据长度
+            byteBuf.writeInt(data.length);
+            // 写入数据
+            byteBuf.writeBytes(data);
+            // 增加引用计数，由调用方释放
+            return byteBuf;
+        }catch (Exception e) {
+            // 异常时释放
+            byteBuf.release();
+            throw e;
+        }
+
     }
 
     @Override
