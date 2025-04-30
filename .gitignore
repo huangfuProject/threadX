@@ -18,8 +18,12 @@
 *.kdev4
 
 # Build targets
-/target
-*/target
+/target/
+*/target/
+*.class
+*.jar
+target
+classes
 
 # Report directories
 /reports
