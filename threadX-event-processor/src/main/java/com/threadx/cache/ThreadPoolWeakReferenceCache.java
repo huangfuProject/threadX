@@ -31,7 +31,7 @@ public class ThreadPoolWeakReferenceCache {
         ThreadPoolIndexData threadPoolIndexData = ThreadPoolIndexCache.setCache(threadPoolExecutor);
         //缓存线程池信息
         WeakReference<ThreadPoolExecutor> threadPoolExecutorWeakReference = new WeakReference<>(threadPoolExecutor);
-        THREAD_POOL_WEAK_REFERENCE_CACHE.put(threadPoolIndexData.getThreadPoolId(), threadPoolExecutorWeakReference);
+        THREAD_POOL_WEAK_REFERENCE_CACHE.put(threadPoolIndexData.getThreadPoolName(), threadPoolExecutorWeakReference);
         //返回索引信息
         return threadPoolIndexData;
     }

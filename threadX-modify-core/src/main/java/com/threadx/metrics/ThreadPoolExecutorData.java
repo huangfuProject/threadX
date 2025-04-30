@@ -19,15 +19,6 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class ThreadPoolExecutorData implements Serializable {
     private static final long serialVersionUID = 6070002614529821970L;
-    /**
-     * 服务名称
-     */
-    private String serverName;
-
-    /**
-     * 实例名称
-     */
-    private String instanceName;
 
     /**
      * 线程池的名称

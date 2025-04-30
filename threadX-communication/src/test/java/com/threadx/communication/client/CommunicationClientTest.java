@@ -8,7 +8,8 @@ public class CommunicationClientTest extends TestCase {
 
     public void testAsyncSendMessage() throws Throwable {
 
-        CommunicationClient communicationClient = new CommunicationClient(new ClientConfig("127.0.0.1", 9999, "test-server","instance"));
+        ClientConfig instance = new ClientConfig("127.0.0.1", 9999, "test-server", "instance");
+        CommunicationClient communicationClient = new CommunicationClient(instance);
         Thread.sleep(3000);
         for (int i = 0; i < 10000000; i++) {
             communicationClient.asyncSendMessage(new TestMessage("哈哈哈哈哈哈" + i));

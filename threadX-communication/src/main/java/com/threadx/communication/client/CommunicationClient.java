@@ -183,8 +183,4 @@ public class CommunicationClient {
     public String getServerAddress() {
         return String.format("%s:%s",clientConfig.getHost(), clientConfig.getPort());
     }
-
-    public ClientConfig getClientConfig() {
-        return clientConfig;
-    }
 }

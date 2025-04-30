@@ -2,10 +2,12 @@ package com.threadx.utils;
 
 import com.threadx.constant.ThreadPoolProxyMake;
 import com.threadx.thread.BusinessThreadXRunnable;
+import com.threadx.thread.BusinessThreadXThreadFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
@@ -18,7 +20,7 @@ public class ThreadXThreadPoolUtil {
 
     private final static String THREAD_POOL_GROUP_NAME_TEMPLATE = "%s#%s:%d";
 
-    private final static String THREAD_POOL_NAME_TEMPLATE = "%s-%d";
+    private final static String THREAD_POOL_NAME_TEMPLATE = "tmp:%s-%d";
 
     /**
      * 获取对象的id
@@ -83,19 +85,13 @@ public class ThreadXThreadPoolUtil {
      * @return 返回真正的名称
      */
     public static String generateThreadPoolName(String threadPoolGroupName, ThreadPoolExecutor poolExecutor) {
+        ThreadFactory threadFactory = poolExecutor.getThreadFactory();
+        if(threadFactory instanceof BusinessThreadXThreadFactory) {
+            return ((BusinessThreadXThreadFactory) threadFactory).getThreadPoolName();
+        }
         return String.format(THREAD_POOL_NAME_TEMPLATE, threadPoolGroupName, System.identityHashCode(poolExecutor));
     }
 
-    /**
-     * 生成线程池的名称
-     *
-     * @param poolExecutor 线程池
-     * @return 返回真正的名称
-     */
-    public static String generateThreadPoolName(ThreadPoolExecutor poolExecutor) {
-        String groupName = generateThreadPoolGroupName();
-        return String.format(THREAD_POOL_NAME_TEMPLATE, groupName, System.identityHashCode(poolExecutor));
-    }
 
     /**
      * 生成线程池的名称

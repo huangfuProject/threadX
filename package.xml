@@ -48,7 +48,15 @@
         </fileSet>
 
         <fileSet>
-            <directory>threadX-metrics-out-tms/target/threadX</directory>
+            <directory>threadX-metrics-out-tms/tms-package/target/threadX</directory>
+            <outputDirectory>/threadX-Agent</outputDirectory>
+            <includes>
+                <include>**/*.*</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>threadX-metrics-out-tms/tms-server/target/threadX</directory>
             <outputDirectory>/threadX-Agent</outputDirectory>
             <includes>
                 <include>**/*.*</include>

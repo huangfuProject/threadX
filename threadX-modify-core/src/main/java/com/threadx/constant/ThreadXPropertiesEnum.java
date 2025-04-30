@@ -1,5 +1,7 @@
 package com.threadx.constant;
 
+import lombok.Getter;
+
 /**
  * *************************************************<br/>
  * threadx配置信息<br/>
@@ -8,17 +10,8 @@ package com.threadx.constant;
  * @author huangfu
  * @date 2023/3/20 18:34
  */
+@Getter
 public enum ThreadXPropertiesEnum {
-
-    /**
-     * 服务标识
-     */
-    SERVER_MAKE_NAME("threadx.server.name", "not set", true),
-
-    /**
-     * 实例标识  每一个实例都应该是一个唯一的存在
-     */
-    INSTANCE_MAKE_NAME("threadx.instance.name", "not set", true),
 
     /**
      * 线程池采集间隔
@@ -32,7 +25,7 @@ public enum ThreadXPropertiesEnum {
     /**
      * 线程指标的输出配置
      */
-    THREADX_METRICS_OUT_MODEL("threadx.thread.pool.metrics.model", "log4j", false),
+    THREADX_METRICS_OUT_MODEL("threadx.thread.pool.metrics.model", "tms", false),
     ;
 
     /**
@@ -53,17 +46,5 @@ public enum ThreadXPropertiesEnum {
         this.key = key;
         this.defaultValue = defaultValue;
         this.required = required;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public String getDefaultValue() {
-        return defaultValue;
-    }
-
-    public boolean isRequired() {
-        return required;
     }
 }

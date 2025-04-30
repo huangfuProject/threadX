@@ -22,6 +22,6 @@ public class ServerHeartbeatHandler  extends SimpleChannelInboundHandler<Heartbe
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        ConnectionCache.removeConnection(ctx);
+        ConnectionCache.closeChannelSilently(ctx, true);
     }
 }

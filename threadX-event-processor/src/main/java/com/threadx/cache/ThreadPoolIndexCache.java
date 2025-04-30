@@ -33,7 +33,7 @@ public class ThreadPoolIndexCache {
         String threadPoolName = ThreadXThreadPoolUtil.generateThreadPoolName(groupName, executor);
         String threadPoolId = ThreadXThreadPoolUtil.getObjectId(executor);
         String createFlow = ThreadXThreadPoolUtil.getCreateFlow();
-        return ThreadPoolIndexCache.setCache(threadPoolId, new ThreadPoolIndexData(threadPoolId, threadPoolName, groupName, createFlow));
+        return ThreadPoolIndexCache.setCache(threadPoolName, new ThreadPoolIndexData(threadPoolId, threadPoolName, groupName, createFlow));
     }
 
     /**

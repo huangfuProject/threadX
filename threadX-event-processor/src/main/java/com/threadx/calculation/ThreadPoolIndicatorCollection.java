@@ -83,14 +83,12 @@ public class ThreadPoolIndicatorCollection {
         String threadPoolGroupName = indexData.getThreadPoolGroupName();
         String createFlow = indexData.getCreateFlow();
 
-        ThreadPoolExecutor executor = ThreadPoolWeakReferenceCache.getCache(threadPoolId);
+        ThreadPoolExecutor executor = ThreadPoolWeakReferenceCache.getCache(threadPoolName);
         if (executor == null) {
             return null;
         }
 
         ThreadPoolExecutorStatusEvent event = new ThreadPoolExecutorStatusEvent();
-        event.setServerName(AgentContext.getServerName());
-        event.setInstanceName(AgentContext.getInstanceName());
         event.setThreadPoolName(threadPoolName);
         event.setThreadPoolGroupName(threadPoolGroupName);
         //使用的队列类型

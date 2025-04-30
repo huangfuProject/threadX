@@ -18,6 +18,7 @@
         <module>threadX-log-api</module>
         <module>threadX-metrics-out-log4j</module>
         <module>threadX-communication</module>
+        <module>threadX-metrics-out-tms</module>
     </modules>
 
     <properties>
@@ -36,6 +37,7 @@
         <netty.version>4.2.0.Final</netty.version>
         <hutool.version>5.8.37</hutool.version>
         <protostuff.version>1.8.0</protostuff.version>
+        <disruptor.version>3.4.4</disruptor.version>
     </properties>
 
     <dependencyManagement>

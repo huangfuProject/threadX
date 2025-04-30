@@ -96,7 +96,7 @@ public class AgentPathParse {
         }
         //读取配置信息
         Properties properties = new Properties();
-        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8)) {
+        try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_8)) {
             logger.info("Load ${THREADX_HOME}/conf/threadX.properties data.");
             properties.load(reader);
         }

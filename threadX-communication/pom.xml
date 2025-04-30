@@ -25,6 +25,20 @@
         </dependency>
 
         <dependency>
+            <groupId>com.threadX</groupId>
+            <artifactId>threadX-log-log4j</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.threadX</groupId>
+            <artifactId>threadX-log-api</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
         </dependency>

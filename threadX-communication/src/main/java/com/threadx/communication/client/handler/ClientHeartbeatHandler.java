@@ -50,14 +50,14 @@ public class ClientHeartbeatHandler extends SimpleChannelInboundHandler<Heartbea
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         //开启增加心跳定时
-        schedule = ctx.executor().schedule(() -> {
+        schedule = ctx.executor().scheduleWithFixedDelay(() -> {
             long receiveTime = RECEIVE_TIME.get();
             if ((System.currentTimeMillis() - receiveTime) > TimeUnit.SECONDS.toMillis(HEARTBEAT_TIMEOUT)) {
                 communicationClient.failureThisConnection();
             }
             HeartbeatMessage heartbeatMessage = new HeartbeatMessage();
             communicationClient.asyncSendMessage(heartbeatMessage);
-        }, HEARTBEAT_INTERVAL, TimeUnit.SECONDS);
+        }, 0L, HEARTBEAT_INTERVAL, TimeUnit.SECONDS);
     }
 
     @Override

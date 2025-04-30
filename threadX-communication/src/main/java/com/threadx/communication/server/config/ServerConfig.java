@@ -2,6 +2,8 @@ package com.threadx.communication.server.config;
 
 import com.threadx.communication.common.DefaultMessageCommunicationConfig;
 import com.threadx.communication.common.MessageCommunicationConfig;
+import com.threadx.communication.common.load.RoundRobinThreadXLoadHandler;
+import com.threadx.communication.common.load.ThreadXLoadHandler;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -41,6 +43,15 @@ public class ServerConfig implements Serializable {
      * 端口号
      */
     private Integer port;
+    /**
+     * 单位秒
+     */
+    private Integer timeout = 120;
+
+    /**
+     * 负载均衡器
+     */
+    private ThreadXLoadHandler loadHandler = new RoundRobinThreadXLoadHandler();
 
     public ServerConfig(String host, Integer port) {
         this.host = host;

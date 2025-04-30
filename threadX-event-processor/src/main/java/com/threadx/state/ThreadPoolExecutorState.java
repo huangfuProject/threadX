@@ -8,11 +8,13 @@ import com.threadx.listeners.ThreadPoolEventListener;
 import com.threadx.log.Logger;
 import com.threadx.log.factory.ThreadXAgetySystemLoggerFactory;
 import com.threadx.thread.BusinessThreadXRejectedExecutionHandler;
+import com.threadx.thread.BusinessThreadXThreadFactory;
 import com.threadx.utils.ConfirmCheckUtil;
 import com.threadx.utils.ThreadXStateEventManager;
 
 import java.io.Serializable;
 import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -35,6 +37,10 @@ public class ThreadPoolExecutorState implements Serializable {
             AgentContext.setUpdateThreadPoolCall(new EventUpdateThreadPoolCall());
         }
         if(ConfirmCheckUtil.isIntercept()) {
+            // 获取线程工厂
+            ThreadFactory threadFactory = sourceThreadPoolExecutor.getThreadFactory();
+            BusinessThreadXThreadFactory newThreadFactory = new BusinessThreadXThreadFactory(threadFactory);
+            sourceThreadPoolExecutor.setThreadFactory(newThreadFactory);
             RejectedExecutionHandler rejectedExecutionHandler = sourceThreadPoolExecutor.getRejectedExecutionHandler();
             logger.info("source RejectedExecutionHandler: {}", rejectedExecutionHandler);
             BusinessThreadXRejectedExecutionHandler newRejectedExecutionHandler = new BusinessThreadXRejectedExecutionHandler(rejectedExecutionHandler);

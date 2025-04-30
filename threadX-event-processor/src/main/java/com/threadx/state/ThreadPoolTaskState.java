@@ -39,7 +39,8 @@ public class ThreadPoolTaskState {
         BusinessThreadXRunnable command = new BusinessThreadXRunnable(sourceCommand);
 
         try {
-            String threadPoolId = ThreadXThreadPoolUtil.getObjectId(executorPool);
+            String groupName = ThreadXThreadPoolUtil.generateThreadPoolGroupName();
+            String threadPoolId = ThreadXThreadPoolUtil.generateThreadPoolName(groupName, executorPool);
             ThreadPoolIndexData threadPoolIndexData = ThreadPoolIndexCache.getCache(threadPoolId);
             if (threadPoolIndexData != null) {
 
@@ -48,14 +49,12 @@ public class ThreadPoolTaskState {
                 logger.debug("thread pool {} submit task.", threadPoolGroupName);
                 //构建数据
                 ThreadPoolExecutorThreadTaskState threadPoolExecutorThreadTaskState = new ThreadPoolExecutorThreadTaskState();
-                threadPoolExecutorThreadTaskState.setServerName(AgentContext.getServerName());
-                threadPoolExecutorThreadTaskState.setInstanceName(AgentContext.getInstanceName());
                 threadPoolExecutorThreadTaskState.setSubmitTime(System.currentTimeMillis());
                 String runnableId = ThreadXThreadPoolUtil.getObjectId(command);
                 threadPoolExecutorThreadTaskState.setTaskId(runnableId);
                 threadPoolExecutorThreadTaskState.setThreadPoolName(threadPoolName);
                 threadPoolExecutorThreadTaskState.setThreadPoolGroupName(threadPoolGroupName);
-                threadPoolExecutorThreadTaskState.setThreadPoolId(threadPoolId);
+                threadPoolExecutorThreadTaskState.setThreadPoolId(ThreadXThreadPoolUtil.getObjectId(executorPool));
                 //缓存数据
                 ThreadPoolTaskCache.addCache(runnableId, threadPoolExecutorThreadTaskState);
                 logger.debug("thread task init cache success.");

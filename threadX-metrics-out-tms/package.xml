@@ -1,0 +1,28 @@
+<assembly>
+    <id>threadX-build</id>
+    <formats>
+        <format>dir</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <fileSets>
+        <fileSet>
+            <directory>tms-package/target/threadX/libs</directory>
+            <outputDirectory>/libs</outputDirectory>
+            <includes>
+                <include>**/*.*</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>tms-server/target/threadX/libs</directory>
+            <outputDirectory>/libs</outputDirectory>
+            <includes>
+                <include>**/*.*</include>
+            </includes>
+        </fileSet>
+
+
+
+    </fileSets>
+</assembly>
